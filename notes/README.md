@@ -41,7 +41,8 @@
 1. Install gdebi
    `sudo apt install gdebi-core`
 1. Retrieve rstudio server .deb file (see https://rstudio.com/products/rstudio/download-server/debian-ubuntu/ for latest version)
-   `wget https://download2.rstudio.org/server/debian9/x86_64/rstudio-server-1.3.1073-amd64.deb`
+   `wget https://download2.rstudio.org/server/bionic/x86_64/rstudio-server-1.3.1073-amd64.deb`
+   > Make sure to get the download link for the correct OS. Using the wrong link causes a lot of headache.
 1. Sanity check `ls` and verify there is an rstudio-server-*.deb file in the current folder.
 1. Install RStudio Server from .deb file
    `sudo gdebi rstudio-server-1.3.1073-amd64.deb`
