@@ -85,6 +85,7 @@
    sudo ACCEPT_EULA=Y apt-get install mssql-tools
    ```
 1. Install FreeTDS
+We're not sure if this is necessary. if you use `odbc::odbcListDrivers()` before running this see if you see the Microsoft driver.
    ```
    wget ftp://ftp.freetds.org/pub/freetds/stable/freetds-1.2.tar.gz
    tar -xzf freetds-1.2.tar.gz
@@ -107,3 +108,39 @@
 1. Configure user (for this I created a script), which will setup their personal R library and default R environment
    `./bin/config.sh <USER_NAME>`
    > Remember to put the username in quotes if the username includes characters like "-"
+   
+### SQL connections
+
+The Driver info was in `/etc/odbcinst.ini` and the DSN info is in the `odbc.ini`. A local DSN file can also be used with the files ~/.odbc.ini and ~/.odbcinst.ini.
+
+The DSN configuration files can be defined globally for all users of the system, often at /etc/odbc.ini or /opt/local/etc/odbc.ini. The file location depends on what option was used when compiling unixODBC; odbcinst -j can be used to find the exact location. Alternatively, the ODBCSYSINI environment variable can be used to specify the location of the configuration files. Ex. ODBCSYSINI=~/ODBC
+
+```sh
+[MSSQL]
+Driver=ODBC Driver 17 for SQL Server
+Server=172.16.24.176
+Database=Analytics
+Port=1433
+```
+
+```r
+con <- DBI::dbConnect(odbc::odbc(),
+                        DSN ="MSSQL",
+                        Server   = "172.16.24.176",
+                        Database = "Analytics",
+                        UID      = "X",
+                        PWD      = "X", 
+                        Port     = 1433)
+
+con <- DBI::dbConnect(odbc::odbc(),
+                      Driver ="ODBC Driver 17 for SQL Server",
+                      Server   = "172.16.24.176",
+                      Database = "Analytics",
+                      UID      = "X",
+                      PWD      = "X", 
+                      Port     = 1433)
+
+
+RODBC::odbcConnect('R-dbsqlprod', uid='X', pwd = "X")
+```
+
